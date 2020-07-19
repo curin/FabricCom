@@ -6,7 +6,15 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.function.Function;
+
 public class FabricCom implements ModInitializer {
+
+    public FabricCom()
+    {
+        Function<FabricCommunication, Integer> fPtr = (FabricCommunication com) -> {return TestReciever(com);};
+        FabricCommunicator.RegisterReciever("test", fPtr);
+    }
 
     public static Logger LOGGER = LogManager.getLogger();
 
@@ -15,12 +23,38 @@ public class FabricCom implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        log(Level.INFO, "Initializing");
-        //TODO: Initializer
+        log(Level.INFO, "Communications are Live");
     }
 
     public static void log(Level level, String message){
-        LOGGER.log(level, "["+MOD_NAME+"] " + message);
+        LOGGER.log(level, "[" + MOD_NAME + "] " + message);
     }
 
+
+    public Integer TestReciever(FabricCommunication com)
+    {
+        if (com.Data != null)
+        {
+            if (com.Message != null)
+            {
+                log(Level.INFO, "[Sender]=" + com.Sender + ", [Message]=" + com.Message + ", [Data]=" + com.Data.toString());
+            }
+            else
+            {
+                log(Level.INFO, "[Sender]=" + com.Sender + ", [Data]=" + com.Data.toString());
+            }
+        }
+        else
+        {
+            if (com.Message != null)
+            {
+                log(Level.INFO, "[Sender]=" + com.Sender + ", [Message]=" + com.Message);
+            }
+            else
+            {
+                log(Level.INFO, "[Sender]=" + com.Sender);
+            }
+        }
+        return 0;
+    }
 }
