@@ -8,10 +8,10 @@ import java.util.Hashtable;
 
 public class FabricCommunicator 
 {
-    private static Hashtable<String, Function<FabricCommunication, Integer>> Recievers = new Hashtable<String, Function<FabricCommunication, Integer>>();
-    public static void RegisterReciever(String modID, Function<FabricCommunication, Integer> reciever)
+    private static Hashtable<String, Function<FabricCommunication, Integer>> Receivers = new Hashtable<String, Function<FabricCommunication, Integer>>();
+    public static void RegisterReceiver(String modID, Function<FabricCommunication, Integer> reciever)
     {
-        Recievers.put(modID, reciever);
+        Receivers.put(modID, reciever);
     }
 
     public static void Send(String modID, String recipient, String message)
@@ -26,9 +26,9 @@ public class FabricCommunicator
 
     public static void Send(String recipient, FabricCommunication communication)
     {
-        if (Recievers.containsKey(recipient))
+        if (Receivers.containsKey(recipient))
         {
-            Recievers.get(recipient).apply(communication);
+            Receivers.get(recipient).apply(communication);
         }
         else
         {
@@ -48,7 +48,7 @@ public class FabricCommunicator
 
     public static void SendGlobal(FabricCommunication communication)
     {
-        for (Function<FabricCommunication, Integer> reciever : Recievers.values())
+        for (Function<FabricCommunication, Integer> reciever : Receivers.values())
         {
             reciever.apply(communication);
         }

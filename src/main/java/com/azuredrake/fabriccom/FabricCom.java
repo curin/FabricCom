@@ -13,7 +13,7 @@ public class FabricCom implements ModInitializer {
     public FabricCom()
     {
         Function<FabricCommunication, Integer> fPtr = (FabricCommunication com) -> {return TestReciever(com);};
-        FabricCommunicator.RegisterReciever("test", fPtr);
+        FabricCommunicator.RegisterReceiver("test", fPtr);
     }
 
     public static Logger LOGGER = LogManager.getLogger();
